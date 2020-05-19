@@ -95,11 +95,11 @@ public class ZKclient {
 
             Stat stat = client.checkExists().forPath(zkPath);
             if (null == stat) {
-                log.info("节点不存在:", zkPath);
+                log.info("节点不存在:{}", zkPath);
                 return false;
             } else {
 
-                log.info("节点存在 stat is:", stat.toString());
+                log.info("节点存在 stat is:{}", stat.toString());
                 return true;
 
             }

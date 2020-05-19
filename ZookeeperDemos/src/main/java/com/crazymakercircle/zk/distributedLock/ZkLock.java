@@ -32,8 +32,12 @@ public class ZkLock implements Lock {
 
     public ZkLock() {
         ZKclient.instance.init();
-        if (!ZKclient.instance.isNodeExist(ZK_PATH)) {
-            ZKclient.instance.createNode(ZK_PATH, null);
+        synchronized (ZKclient.instance)
+        {
+            if (!ZKclient.instance.isNodeExist(ZK_PATH))
+            {
+                ZKclient.instance.createNode(ZK_PATH, null);
+            }
         }
         client = ZKclient.instance.getClient();
     }
