@@ -163,13 +163,15 @@ public class ZkLock implements Lock {
 
     private boolean tryLock() throws Exception {
         //创建临时Znode
-        List<String> waiters = getWaiters();
         locked_path = ZKclient.instance
                 .createEphemeralSeqNode(LOCK_PREFIX);
+        //然后获取所有节点
+        List<String> waiters = getWaiters();
+
         if (null == locked_path) {
             throw new Exception("zk error");
         }
-        locked_short_path = getShorPath(locked_path);
+        locked_short_path = getShortPath(locked_path);
 
         //获取等待的子节点列表，判断自己是否第一个
         if (checkLocked(waiters)) {
@@ -188,7 +190,7 @@ public class ZkLock implements Lock {
         return false;
     }
 
-    private String getShorPath(String locked_path) {
+    private String getShortPath(String locked_path) {
 
         int index = locked_path.lastIndexOf(ZK_PATH + "/");
         if (index >= 0) {

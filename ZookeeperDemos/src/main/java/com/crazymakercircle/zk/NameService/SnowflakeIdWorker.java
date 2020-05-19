@@ -22,7 +22,6 @@ public class SnowflakeIdWorker {
 
     public static SnowflakeIdWorker instance = new SnowflakeIdWorker();
 
-
     private SnowflakeIdWorker() {
         this.zkClient = ZKclient.instance.getClient();
         this.init();
