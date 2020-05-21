@@ -1,7 +1,6 @@
 package com.crazymakercircle.iodemo.socketDemos;
 
 import com.crazymakercircle.NioDemoConfig;
-import com.crazymakercircle.util.FormatUtil;
 import com.crazymakercircle.util.IOUtil;
 import com.crazymakercircle.util.Logger;
 
@@ -10,7 +9,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.text.DecimalFormat;
 
 
 /**
@@ -20,14 +18,10 @@ public class BlockReceiveServer extends ServerSocket
 {
 
     // 服务端端口
-    private static final int SERVER_PORT =
-            NioDemoConfig.SOCKET_SERVER_PORT;
+    private static final int SERVER_PORT = NioDemoConfig.SOCKET_SERVER_PORT;
 
     //接受文件路径
-    private static final String RECIEVE_PATH =
-            NioDemoConfig.SOCKET_RECEIVE_PATH;
-
-    private static DecimalFormat df = FormatUtil.decimalFormat(1);
+    private static final String RECEIVE_PATH = NioDemoConfig.SOCKET_RECEIVE_PATH;
 
 
     public BlockReceiveServer() throws Exception
@@ -84,11 +78,12 @@ public class BlockReceiveServer extends ServerSocket
             try
             {
                 dis = new DataInputStream(socket.getInputStream());
-
-                // 文件名和长度
-                String fileName = dis.readUTF();
+                // 长度
                 long fileLength = dis.readLong();
-                File directory = new File(RECIEVE_PATH);
+                // 文件名
+                String fileName = dis.readUTF();
+
+                File directory = new File(RECEIVE_PATH);
                 if (!directory.exists())
                 {
                     directory.mkdir();
@@ -138,6 +133,8 @@ public class BlockReceiveServer extends ServerSocket
             // 启动服务端
             BlockReceiveServer server = new BlockReceiveServer();
             server.startServer();
+
+            Thread.sleep(Integer.MAX_VALUE);
         } catch (Exception e)
         {
             e.printStackTrace();

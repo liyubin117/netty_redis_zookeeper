@@ -33,8 +33,7 @@ public class BlockSendClient extends Socket
         super(NioDemoConfig.SOCKET_SERVER_IP
                 , NioDemoConfig.SOCKET_SERVER_PORT);
         this.client = this;
-        Logger.debug("Cliect[port:" + client.getLocalPort() + "] 成功连接服务端");
-    }
+     }
 
     /**
      * 向服务端传输文件
@@ -45,17 +44,21 @@ public class BlockSendClient extends Socket
     {
         try
         {
-            File file = new File(NioDemoConfig.SOCKET_SEND_FILE);
+            String sourcePath = NioDemoConfig.SOCKET_SEND_FILE;
+            String srcPath = IOUtil.getResourcePath(sourcePath);
+            Logger.info("srcPath=" , srcPath);
+
+            File file = new File(srcPath);
             if (file.exists())
             {
                 fis = new FileInputStream(file);
                 dos = new DataOutputStream(client.getOutputStream());
-
+                dos.writeLong(file.length());
+                dos.flush();
                 // 文件名和长度
                 dos.writeUTF("copy_" + file.getName());
                 dos.flush();
-                dos.writeLong(file.length());
-                dos.flush();
+
 
                 // 开始传输文件
                 Logger.debug("======== 开始传输文件 ========");
@@ -70,6 +73,9 @@ public class BlockSendClient extends Socket
                     Logger.debug("| " + (100 * progress / file.length()) + "% |");
                 }
                 Logger.debug("======== 文件传输成功 ========");
+            }else {
+
+                Logger.info("======== 文件传输失败, 文件不存在 ========");
             }
         } catch (Exception e)
         {
