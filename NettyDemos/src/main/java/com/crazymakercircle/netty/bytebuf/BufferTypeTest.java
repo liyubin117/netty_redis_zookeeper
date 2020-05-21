@@ -17,7 +17,9 @@ public class BufferTypeTest {
     @Test
     public  void testHeapBuffer() {
         //取得堆内存
-        ByteBuf heapBuf =  ByteBufAllocator.DEFAULT.buffer();
+        //取得堆内存--netty4默认直接buffer，而非堆buffer
+        //ByteBuf heapBuf = ByteBufAllocator.DEFAULT.buffer();
+        ByteBuf heapBuf = ByteBufAllocator.DEFAULT.heapBuffer();
         heapBuf.writeBytes("疯狂创客圈:高性能学习社群".getBytes(UTF_8));
         if (heapBuf.hasArray()) {
             //取得内部数组

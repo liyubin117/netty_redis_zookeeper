@@ -6,7 +6,7 @@ public class ByteBufTest
 {
     public static void test1()
     {
-        ByteBuf buffer = ByteBufAllocator.DEFAULT.buffer(9, 100);
+         ByteBuf buffer = ByteBufAllocator.DEFAULT.buffer(9, 100);
 
         print("allocate ByteBuf(9, 100)", buffer);
 
