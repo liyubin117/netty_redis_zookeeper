@@ -35,6 +35,7 @@ public class UDPServer {
                 if (selectionKey.isReadable()) {
                     //操作二：读取DatagramChannel数据报通道数据
                     SocketAddress client = datagramChannel.receive(buffer);
+                    Print.tcfo("receive from:" + client);
                     buffer.flip();
                     Print.tcfo(new String(buffer.array(), 0, buffer.limit()));
                     buffer.clear();

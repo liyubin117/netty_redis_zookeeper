@@ -14,23 +14,23 @@ import java.util.Set;
 //反应器
 class EchoServerReactor implements Runnable {
     Selector selector;
-    ServerSocketChannel serverSocket;
+    ServerSocketChannel ssc;
 
     EchoServerReactor() throws IOException {
         //Reactor初始化
         selector = Selector.open();
-        serverSocket = ServerSocketChannel.open();
+        ssc = ServerSocketChannel.open();
 
         InetSocketAddress address =
                 new InetSocketAddress(NioDemoConfig.SOCKET_SERVER_IP,
                         NioDemoConfig.SOCKET_SERVER_PORT);
-        serverSocket.socket().bind(address);
+        ssc.socket().bind(address);
         //非阻塞
-        serverSocket.configureBlocking(false);
+        ssc.configureBlocking(false);
 
         //分步处理,第一步,接收accept事件
         SelectionKey sk =
-                serverSocket.register(selector, SelectionKey.OP_ACCEPT);
+                ssc.register(selector, SelectionKey.OP_ACCEPT);
         //attach callback object, AcceptorHandler
         sk.attach(new AcceptorHandler());
     }
@@ -65,7 +65,7 @@ class EchoServerReactor implements Runnable {
     class AcceptorHandler implements Runnable {
         public void run() {
             try {
-                SocketChannel channel = serverSocket.accept();
+                SocketChannel channel = ssc.accept();
                 if (channel != null)
                     new EchoHandler(selector, channel);
             } catch (IOException e) {
